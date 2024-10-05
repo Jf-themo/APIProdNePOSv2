@@ -1,0 +1,9 @@
+# Ignorar el archivo package.json
+package.json
+
+# Ignorar la carpeta node_modules
+node_modules/
+
+# Ignorar cualquier otra carpeta específica, por ejemplo 'dist' y 'build'
+dist/
+build/
