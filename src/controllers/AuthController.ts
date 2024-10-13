@@ -47,7 +47,7 @@ class AuthController {
 
       res.status(200).json({
         access_token: response.data.access_token,
-        refresh_token: response.data.refresh_token,
+        // refresh_token: response.data.refresh_token,
       });
     } catch (error) {
       res.status(500).send({ error: error });
