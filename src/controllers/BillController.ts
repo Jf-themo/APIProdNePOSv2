@@ -3,8 +3,7 @@ import axios, { AxiosResponse } from "axios";
 
 const url: string = "https://api-sandbox.factus.com.co";
 const token: string =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5YzczNGJkNi04MWJkLTRmNjEtODNhNS05ZTc5NDExOGE1NDciLCJqdGkiOiIwMTU5OThiMWM1MjFmNGQ1MjIzYjZkNzg1NDZmYzE3MWYzODJiZjA4NGRkMjgxZjFjODZhNWRjNDAyMjZlYWRlNzA0OWQ1ZjI0NzYzNTc4NiIsImlhdCI6MTcyODc4ODM4My4zODMxMzEsIm5iZiI6MTcyODc4ODM4My4zODMxNDUsImV4cCI6MTcyODc5MTk4My4zNzA4MDEsInN1YiI6IjMiLCJzY29wZXMiOltdfQ.XF90RHSxUwKujqG_HH5vcPeK16dG1rqW5FTbG4s1g3h9etIHsDpi-JMhEOz1OxvPg3_4fKhvZRR7CzoV1btI0dIJN71K2g_Vw2YQJSd78qFraW78V6U4tqJHaVtihD5-HSHP6OWp4_ThOcUMAmQx3IF8zZI86BdETd-r--XufgVSlwWvH2jnNBUMH3Blp8sSPna7ILAH_yWy2Y3KgeB8K8t7eyufFb9_xOGfJcK-YXxKYLaStjotFwuClLOPv_CLcdWGjjxiBytOHW1wO6yhmM66dVXjW-eevavPeHDSV90eup80Hjqh2NujzW58T_fi6wm-wMgEV05otUyMV7RR_3GwjSKMt63BqCvG4PAyzgXwozS8UBFx2Eh7k9H9gjgz9t0vcZF_PJ7PyGDZqp5itDyc5UnV1METS9zLjgn4oBe3B_N_Mltgaj_UoImNb9WuT_Ms9cJcdt-5ZGYZW3E8v_C17NCZvTSfxI7bFRHqPpcnUJs3F5sWdHEh5ejFPvOqCAfhWzR8bEEjpDMFhhZWZpGvpllChTzv4wAp9Gxt-Fz870ks_p4qbvjFf7VWLvzaXc2zurLv9I92kcGbHkspFDA8_qPqxY8F-CxVQCmfMjk5ccRYATL6LNSJ9ZV_-7UcTP3icifU0mYN01Iv2NMVb_rlcAgRJXjhSgYVD1lQd8E";
-
+  "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5YzczNGJkNi04MWJkLTRmNjEtODNhNS05ZTc5NDExOGE1NDciLCJqdGkiOiI0NDViMmNmYjFhMzIwMTE4ODk2NmYxNWJlMzdlY2ZkMWM3YzI2OWIzOWMwYzYzOGQ0MmJkYmE1MTk5ODZiMTVmZDY2ZWU1NzM0YjNlZjhkNyIsImlhdCI6MTcyOTIwNTcxOC42ODIxMDYsIm5iZiI6MTcyOTIwNTcxOC42ODIxMDksImV4cCI6MTcyOTIwOTMxOC42NzIyMjYsInN1YiI6IjMiLCJzY29wZXMiOltdfQ.ntW6Ch6d2pfLxHO7CpIIJFm21YdxV2qQONDRFZ2_nSBlYevNV7nLcfJs4hELJIEIB5u0Q5gw1KYfYjd6TWUpn3HP3EQNBzlIHlPjtM72KlFakZc1F3I9EBdC7Y_DC72FnkxKkk8lzVv3G_7n77qQCwBgWypNIkfQO4PmiMa02JLrSd34s4GFYmujXvpmitTsBuyN6pZoGKDsTDyAL0UJ77ZuaEQ3HtuwH9Nh41SN7HiUIgwhLZDINJwHCZRoEldMy-yNcfoeR9I-2eavb4uEYQOjAQHj4UUMJApkNb3a3Ry0LO1c-4BAXqgbt384ACHgH_w9OT6egjPN71I7i-GvQFbaqwsXWTqy-vO_-VXTu5YGk567oYXy4dp1dksLlmQ_FGB3v4ebyfcqEoqoF75O4LGwHeJ5fb_wbtc5Q2IBWldd8y7O82p7Br6UCkNYQ4ULRjDghnSFCgpNI6xci4UjmOrxMHkUK36DHibkJY6Ylw77KkLMSmZ_ubz1grf7XpLdhp1VqQGbaBb9AX4v4CkwNOZt9kcO_GxO-FMHnmZODX-cW5pkvb6uw5jzCXpuRCxm1B9z82YI7AEI_dYfA2-cEwPIiDcl5Z5OycC5yzPTRAR8l80LMSAsG6cu0plCYAKsH14y1r-12LGwwkfLZAAhdJTp-csIVCbu7ofZMfC4fUs";
 class BillController {
   /**
    * Servicio para crear una factura.
@@ -20,68 +19,111 @@ class BillController {
    * @response {500} Error al realizar la solicitud.
    */
   public static async createBill(req: Request, res: Response): Promise<void> {
+    console.log("ENTRE");
     try {
       const body = req.body;
+      console.log(body);
+
+      //Client data
+      let client = {
+        name: body[0]?.names,
+        identfication: body[0]?.identification,
+        identification_document_id: body[0]?.identification_document_id,
+        email: body[0]?.email,
+      };
+
+      //acces token
+      let token = body[0]?.token;
+
+      //reference code
+      let reference_code = body[0]?.reference_code;
+      let legal_organization_id = body[0]?.legal_organization_id;
+
+      //product list
+      let products = body.map((item: any) => ({
+        code_reference: item?.code_reference,
+        name: item?.name,
+        quantity: item?.quantity,
+        discount: item?.discount,
+        discount_rate: item?.discount_rate,
+        price: item?.price,
+        tax_rate: 19.0,
+        unit_measure_id: item?.unit_measure_id,
+        standard_code_id: item?.standard_code_id,
+        is_excluded: item?.is_excluded,
+        tribute_id: 1,
+        withholding_taxes: [],
+        // precio: item?.precio,
+      }));
+
+      // console.log({ client });
+      // console.log({ token });
+      // console.log({ products });
+      // console.log({ reference_code });
+      // console.log({ legal_organization_id });
+
       const response = await axios.post(
         `${url}/v1/bills/validate`,
         {
-          numbering_range_id: body?.numbering_range_id,
-          reference_code: body?.reference_code,
+          numbering_range_id: 4,
+          reference_code: reference_code,
           observation: "",
           payment_method_code: "10",
           customer: {
-            identification: "123456789",
+            identification: client.identfication,
             dv: "",
             company: "",
             trade_name: "",
-            names: "Alan Turing",
+            names: client.name,
             address: "",
-            email: "alanturing@enigmasas.com",
+            email: client.email,
             phone: "",
             legal_organization_id: "2",
             tribute_id: "21",
-            identification_document_id: "3",
-            municipality_id: "980",
+            identification_document_id: client.identification_document_id,
+            municipality_id: "20770",
           },
-          items: [
-            {
-              code_reference: "12345",
-              name: "producto de prueba",
-              quantity: 1,
-              discount: 8403.36,
-              discount_rate: 20,
-              price: 50000,
-              tax_rate: "19.00",
-              unit_measure_id: 70,
-              standard_code_id: 1,
-              is_excluded: 0,
-              tribute_id: 1,
-              withholding_taxes: [
-                {
-                  code: "06",
-                  withholding_tax_rate: "7.00",
-                },
-                {
-                  code: "05",
-                  withholding_tax_rate: "15.00",
-                },
-              ],
-            },
-            {
-              code_reference: "54321",
-              name: "producto de prueba 2",
-              quantity: 1,
-              discount: 0,
-              discount_rate: 0,
-              price: 50000,
-              tax_rate: "5.00",
-              unit_measure_id: 70,
-              standard_code_id: 1,
-              is_excluded: 0,
-              tribute_id: 1,
-              withholding_taxes: [],
-            },
-          ],
+          // items: [
+          //   {
+          //     code_reference: "12345",
+          //     name: "producto de prueba",
+          //     quantity: 1,
+          //     discount: 8403.36,
+          //     discount_rate: 20,
+          //     price: 50000,
+          //     tax_rate: "19.00",
+          //     unit_measure_id: 70,
+          //     standard_code_id: 1,
+          //     is_excluded: 0,
+          //     tribute_id: 1,
+          //     withholding_taxes: [
+          //       {
+          //         code: "06",
+          //         withholding_tax_rate: "7.00",
+          //       },
+          //       {
+          //         code: "05",
+          //         withholding_tax_rate: "15.00",
+          //       },
+          //     ],
+          //   },
+          //   {
+          //     code_reference: "54321",
+          //     name: "producto de prueba 2",
+          //     quantity: 1,
+          //     discount: 0,
+          //     discount_rate: 0,
+          //     price: 50000,
+          //     tax_rate: "5.00",
+          //     unit_measure_id: 70,
+          //     standard_code_id: 1,
+          //     is_excluded: 0,
+          //     tribute_id: 1,
+          //     withholding_taxes: [],
+          //   },
+          // ],
+
+          items: products,
         },
         {
           headers: {
@@ -271,6 +313,39 @@ class BillController {
       console.log(data);
       if (response.status === 200) {
         res.status(200).json(response.data.data);
+        return;
+      }
+    } catch (error) {
+      res.status(500).json({
+        error: error,
+      });
+    }
+  }
+
+  public static async deteleBill(req: Request, res: Response) {
+    try {
+      const { id, tokenRequest } = req.body;
+      console.log({ id });
+
+      if (!id) {
+        res.status(400).json({
+          message: "El campo id es implicitamente falso",
+        });
+        return;
+      }
+
+      const response = await axios.delete(`${url}/v1/bills/destroy/${id}`, {
+        headers: {
+          Authorization: `Bearer ${tokenRequest}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      let data = response;
+
+      console.log(data);
+      if (response.status === 200) {
+        res.status(200).json(response);
         return;
       }
     } catch (error) {

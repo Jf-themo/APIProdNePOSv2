@@ -7,5 +7,6 @@ const route = Router();
 route.route("/create-bill").post(BillController.createBill);
 route.route("/get-bills").get(BillController.getBills);
 route.route("/get-bill-by-id").post(BillController.getBillById);
+route.route("/delete-bill").delete(BillController.deteleBill);
 
 export default route;
