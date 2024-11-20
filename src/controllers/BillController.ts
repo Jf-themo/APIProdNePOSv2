@@ -65,7 +65,7 @@ class BillController {
       const response = await axios.post(
         `${url}/v1/bills/validate`,
         {
-          numbering_range_id: 4,
+          numbering_range_id: 8,
           reference_code: reference_code,
           observation: "",
           payment_method_code: "10",
@@ -205,6 +205,11 @@ class BillController {
         console.log("DATA TRATADA");
         console.log(billCreated);
         res.status(201).json(billCreated);
+      }else if(response.status ===409){
+          res.status(409).json({
+            msg:"Campos obligatorios vacion",
+            respuesta:response
+          })
       }
     } catch (error: any) {
       // Check if the error has a response from the server
