@@ -208,7 +208,7 @@ class BillController {
         res.status(201).json(billCreated);
       } else if (response.status === 409) {
         res.status(409).json({
-          msg: "Campos obligatorios vacion",
+          msg: "Campos obligatorios vacios",
           respuesta: response,
         });
       }

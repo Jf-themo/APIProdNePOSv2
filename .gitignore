@@ -7,3 +7,4 @@ node_modules/
 # Ignorar cualquier otra carpeta específica, por ejemplo 'dist' y 'build'
 dist/
 build/
+/.idea
