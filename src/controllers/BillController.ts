@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import axios, { AxiosResponse } from "axios";
 
-const url: string = "https://api.factus.com.co";
-// const url: string = "https://api-sandbox.factus.com.co";
+// const url: string = "https://api.factus.com.co";
+const url: string = "https://api-sandbox.factus.com.co";
 const token: string =
   "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5YzczNGJkNi04MWJkLTRmNjEtODNhNS05ZTc5NDExOGE1NDciLCJqdGkiOiI0NDViMmNmYjFhMzIwMTE4ODk2NmYxNWJlMzdlY2ZkMWM3YzI2OWIzOWMwYzYzOGQ0MmJkYmE1MTk5ODZiMTVmZDY2ZWU1NzM0YjNlZjhkNyIsImlhdCI6MTcyOTIwNTcxOC42ODIxMDYsIm5iZiI6MTcyOTIwNTcxOC42ODIxMDksImV4cCI6MTcyOTIwOTMxOC42NzIyMjYsInN1YiI6IjMiLCJzY29wZXMiOltdfQ.ntW6Ch6d2pfLxHO7CpIIJFm21YdxV2qQONDRFZ2_nSBlYevNV7nLcfJs4hELJIEIB5u0Q5gw1KYfYjd6TWUpn3HP3EQNBzlIHlPjtM72KlFakZc1F3I9EBdC7Y_DC72FnkxKkk8lzVv3G_7n77qQCwBgWypNIkfQO4PmiMa02JLrSd34s4GFYmujXvpmitTsBuyN6pZoGKDsTDyAL0UJ77ZuaEQ3HtuwH9Nh41SN7HiUIgwhLZDINJwHCZRoEldMy-yNcfoeR9I-2eavb4uEYQOjAQHj4UUMJApkNb3a3Ry0LO1c-4BAXqgbt384ACHgH_w9OT6egjPN71I7i-GvQFbaqwsXWTqy-vO_-VXTu5YGk567oYXy4dp1dksLlmQ_FGB3v4ebyfcqEoqoF75O4LGwHeJ5fb_wbtc5Q2IBWldd8y7O82p7Br6UCkNYQ4ULRjDghnSFCgpNI6xci4UjmOrxMHkUK36DHibkJY6Ylw77KkLMSmZ_ubz1grf7XpLdhp1VqQGbaBb9AX4v4CkwNOZt9kcO_GxO-FMHnmZODX-cW5pkvb6uw5jzCXpuRCxm1B9z82YI7AEI_dYfA2-cEwPIiDcl5Z5OycC5yzPTRAR8l80LMSAsG6cu0plCYAKsH14y1r-12LGwwkfLZAAhdJTp-csIVCbu7ofZMfC4fUs";
 class BillController {
@@ -45,6 +45,7 @@ class BillController {
         code_reference: item?.code_reference,
         name: item?.name,
         quantity: item?.quantity,
+        // discount: "0.0",
         discount: item?.discount,
         discount_rate: item?.discount_rate,
         price: item?.price,
@@ -66,7 +67,7 @@ class BillController {
       const response = await axios.post(
         `${url}/v1/bills/validate`,
         {
-          numbering_range_id: 8,
+          numbering_range_id: [],
           reference_code: reference_code,
           observation: "",
           payment_method_code: "10",
@@ -213,7 +214,7 @@ class BillController {
         });
       }
     } catch (error: any) {
-      // Check if the error has a response from the server
+      // // Check if the error has a response from the server
       if (error.response) {
         console.error("Error response data:", error.response.data);
         console.error("Error status:", error.response.status);
