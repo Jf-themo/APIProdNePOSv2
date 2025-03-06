@@ -31,6 +31,7 @@ class BillController {
         identfication: body[0]?.identification,
         identification_document_id: body[0]?.identification_document_id,
         email: body[0]?.email,
+        municipality_id: body[0].municipality_id,
       };
 
       //acces token
@@ -83,7 +84,7 @@ class BillController {
             legal_organization_id: "2",
             tribute_id: "21",
             identification_document_id: client.identification_document_id,
-            municipality_id: "20770",
+            municipality_id: client.municipality_id,
           },
           // items: [
           //   {
@@ -215,10 +216,14 @@ class BillController {
       }
     } catch (error: any) {
       // // Check if the error has a response from the server
+      console.log({ errorLuva: error });
       if (error.response) {
-        console.error("Error response data:", error.response.data);
+        // console.error("Error response data:", error.response.data);
+        console.error(error.response.data);
         console.error("Error status:", error.response.status);
         console.error("Error headers:", error.response.headers);
+        const myInfo = error.response.data;
+        console.log({ myInfo: myInfo.errors });
 
         res.status(error.response.status).json({
           message: "Error from server",

@@ -51,6 +51,7 @@ class AuthController {
         // refresh_token: response.data.refresh_token,
       });
     } catch (error) {
+      console.log({ error });
       res.status(500).send({ error: error });
     }
   }
