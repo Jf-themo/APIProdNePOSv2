@@ -3,6 +3,7 @@ import morgan from "morgan";
 import userRoute from "./routes/user.routes";
 import authRoute from "./routes/auth.routes";
 import billRouter from "./routes/bill.routes";
+import noteCreditRoute from "./routes/noteCredit.routes";
 import cors from "cors";
 
 export class App {
@@ -26,6 +27,7 @@ export class App {
     this.app.use(userRoute);
     this.app.use(authRoute);
     this.app.use(billRouter);
+    this.app.use(noteCreditRoute);
   }
 
   async listen() {
