@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from "axios";
 // const url: string = "https://api.factus.com.co/v1";
 const url: string = "https://api-sandbox.factus.com.co/v1";
 const token =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5ZDhkOTYyYy1kNzZhLTRiODYtOTViYy1mZDk2OTMxYzk5MzkiLCJqdGkiOiIwNTlkZmM1NWI4MzQ3OTg3OWE2YzE0ODM1ZDEwNWZmOTQ4OTEzY2I2MjBjZjk3NzNhMmIwNWMzMWRiNWYyNTQzMTM4NTk0ZGZmNjA3MWJmOSIsImlhdCI6MTc0MTk5NjM0OS4yODE4NjEsIm5iZiI6MTc0MTk5NjM0OS4yODE4NjMsImV4cCI6MTc0MTk5OTk0OS4yNzEwNjcsInN1YiI6IjUiLCJzY29wZXMiOltdfQ.aWwOeCYb-HLiK6nh4Q-fBsn9XyDJntyCfC0K93d27XNGeL2u0GkyuwXcHuAX-nVhweiWNvJt1weatts-ueLe_ieSlai3FxcxfhTWtQmNoK0KygeYx9njM2syLNggyvzP98EEhlOdZQU5dGYLThzconMEuUjFsC-1oxbcxET5Gk8XdtyA0BjeYiXxWj09M7T2uhO6bqPSgTftk3wgjj8Qm7XMh_1-NlX1A1tLnSBoRFWudDJJRXQH9-U0mPK6FsV40VWoa75WgwtJX9vb19oCu2ALBmdcn8agkq8QVsfIjdqE9W7gPaS5k625o96HHos3UvBY_tFwj2kZjnSIAalIbdWfBJE4C9_On5On3OUvla9u0Ao8j46UHePQAQ82YsbSDB8NLdrNCeNcrVwEk7QmIWHXBZ-sPPfz1-8BUAQVF3-SI_6KvgeqrHoFUd6ehQzdoWJhWmfhOIFGevzGWe6zTQinaqzeQ1ijX4A2WyWlrHdpQwRtrVM5E9a-OdwM4CHc5HJq-6mxRSrFIO6qsTw8UDnF5xyqVBH49YzA-CTtaAqdTinmyvT7vAX8Q3gY7IuHx88D9qqUmb1rdWnTKey-v9OMc8iOVzDmfud0P_0ewExMDA_nepIL7mlf9wUx7Mq4CMzAHchq4CA4tkEFyEPK30y9hwsLuYRTfV9Re8_uJCs";
+  "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5ZDhkOTYyYy1kNzZhLTRiODYtOTViYy1mZDk2OTMxYzk5MzkiLCJqdGkiOiJlYzVlOTQwMTgxOWQ4NjAzYTM4OGY1ZGY2NTJiMjRlOTJmYjk2Zjc0NGVkZjcyMGU2MGVjYjgwNmFlMTc4ZGNjN2Q5MzIxOWE4ZWMyMGNkOCIsImlhdCI6MTc0MzY0NDQzNC43MzM2NzksIm5iZiI6MTc0MzY0NDQzNC43MzM2ODIsImV4cCI6MTc0MzY0ODAzNC43MTg5MzQsInN1YiI6IjUiLCJzY29wZXMiOltdfQ.ATo0H8yTKLkNLrPahC_oYqzNMxu5nxUDqf907UmoJAqAJIn08oSQfvSbbNax8aH_taiBdzOtBLyQhabJ5dJwtAB2TiGYdGR7lr-cn0bUkm7x99lag4wHxyTuGofNH9hdNV_RV7j7iz--WAEulJsYBAA4TobbEWLpCcCQoZTEiXvO1TtBkp2JpIibHoD6n4EqnXcIIEcinYjkGEiAF9ng31WJL4EG30zZMPHRJxTHWru44e6JbDs3XIZ-uRdo2ZLAcfHhaNVl9UwfG9V2LaTZN3b8firowlr-XkPE9aIPh7CaoDu8LNR5jzkpuv409u8MR9WMcGTd5R9Amd6USCefX0wZlDiJqPGVfiVAZtk1onEK-v77hAAx8RHbXgO7c3oP5HtOyCieBa389Dag_zDsxR7Y-NfZghA8Bj6SsuZVAx4rD2R8ijeRyIArCk8q6mFDARLtCzZpE-Wxr2q_GFxv3glHLcv-Zco3ieT7tFZItlfDnR6xTQCeKeZDFLX28lXMVUI7pq2CLt5SxtlBHrgQqZn_iyaVY3BEtffk4UC7I2swZZP89sGk6sRDwmCwhLoR8JHx9m_mk_FzrrdXNo7gPs79eGPFdx8ZU4Q9VtBDPAeoOI4YgJkYTGKlA2_nhL04Tpghb2RJ0SliD_fQbETx2aWHhC5h8bxAGi8Rs3Rgjtk";
 class NoteCreditController {
   // public static async createNoteCredit(
   //   req: Request,
@@ -90,22 +90,24 @@ class NoteCreditController {
     console.log("ENTRÉ A NOTA CRÉDITO");
     const body = req.body;
 
+    console.log({ token: body[0].token, body: body[0], items: body[0]?.items });
+
     try {
       const response = await axios.post(
         `${url}/credit-notes/validate`,
         {
-          numbering_range_id: body.numbering_range_id,
-          correction_concept_code: body.correction_concept_code,
-          customization_id: body.customization_id,
-          bill_id: body.bill_id,
-          reference_code: body.reference_code,
-          observation: body.observation,
-          payment_method_code: body.payment_method_code,
-          items: body.items,
+          numbering_range_id: body[0]?.numbering_range_id,
+          correction_concept_code: body[0]?.correction_concept_code,
+          customization_id: body[0]?.customization_id,
+          bill_id: body[0]?.id_bill,
+          reference_code: body[0]?.reference_code,
+          observation: body[0]?.observation,
+          payment_method_code: body[0]?.payment_method_code,
+          items: body[0]?.items,
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${body[0]?.token}`,
             "Content-Type": "application/json",
           },
         }
