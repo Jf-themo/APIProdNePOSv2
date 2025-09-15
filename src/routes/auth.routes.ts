@@ -5,5 +5,6 @@ import AuthController from "../controllers/AuthController";
 const route = Router();
 
 route.route("/get-token").post(AuthController.getToken);
+route.route("/get-subscription").post(AuthController.validateSubscription);
 
 export default route;
