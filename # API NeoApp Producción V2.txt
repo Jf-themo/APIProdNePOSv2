@@ -1,0 +1,79 @@
+# API NeoApp Producción V2
+
+## Descripción
+
+API RESTful para la gestión de usuarios, autenticación, facturación y notas crédito, desarrollada en TypeScript con Express y MySQL.
+
+## Estructura
+
+- **src/**: Código fuente
+  - **controllers/**: Lógica de negocio
+  - **models/**: Entidades (User, People)
+  - **routes/**: Rutas Express
+  - **interfaces/**: Interfaces TypeScript
+  - **utils/**: Funciones auxiliares
+- **docs/**: Documentación JSDoc
+
+## Instalación
+
+```sh
+npm install
+```
+
+## Configuración
+
+1. Crea un archivo `.env` con:
+   ```
+   CLIENT_ID=tu_client_id
+   CLIENT_SECRET=tu_client_secret
+   USER=tu_usuario
+   PASSWORD=tu_password
+   ```
+2. Configura la base de datos en [`src/database.ts`](src/database.ts).
+
+## Ejecución
+
+```sh
+npm run build
+npm start
+```
+
+## Endpoints
+
+### Usuarios
+
+- `GET /list-all-user` - Lista todos los usuarios.
+- `POST /create-user` - Crea un usuario.
+- `POST /sing-in` - Inicio de sesión.
+
+### Autenticación
+
+- `POST /get-token` - Obtiene token de acceso.
+- `POST /get-subscription` - Valida suscripción.
+
+### Facturación
+
+- `POST /create-bill` - Crea factura.
+- `GET /get-bills` - Lista facturas.
+- `POST /get-bill-by-id` - Consulta factura por ID.
+- `DELETE /delete-bill` - Elimina factura.
+
+### Notas Crédito
+
+- `POST /create-note-credit` - Crea nota crédito.
+
+## Documentación
+
+Abre [`docs/index.html`](docs/index.html) para ver la documentación completa.
+
+## Contribución
+
+1. Haz un fork del repositorio.
+2. Crea una rama (`git checkout -b feature/nueva-funcionalidad`).
+3. Haz tus cambios y realiza un pull request.
+
+## Licencia
+
+Este proyecto está bajo la Licencia Apache 2.0.
+
+---
