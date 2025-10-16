@@ -1,8 +1,8 @@
 import { Request, response, Response } from "express";
 import axios, { AxiosResponse } from "axios";
 
-// const url: string = "https://api.factus.com.co/v1";
-const url: string = "https://api-sandbox.factus.com.co/v1";
+const url: string = "https://api.factus.com.co/v1";
+// const url: string = "https://api-sandbox.factus.com.co/v1";
 const token =
   "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5ZDhkOTYyYy1kNzZhLTRiODYtOTViYy1mZDk2OTMxYzk5MzkiLCJqdGkiOiJlYzVlOTQwMTgxOWQ4NjAzYTM4OGY1ZGY2NTJiMjRlOTJmYjk2Zjc0NGVkZjcyMGU2MGVjYjgwNmFlMTc4ZGNjN2Q5MzIxOWE4ZWMyMGNkOCIsImlhdCI6MTc0MzY0NDQzNC43MzM2NzksIm5iZiI6MTc0MzY0NDQzNC43MzM2ODIsImV4cCI6MTc0MzY0ODAzNC43MTg5MzQsInN1YiI6IjUiLCJzY29wZXMiOltdfQ.ATo0H8yTKLkNLrPahC_oYqzNMxu5nxUDqf907UmoJAqAJIn08oSQfvSbbNax8aH_taiBdzOtBLyQhabJ5dJwtAB2TiGYdGR7lr-cn0bUkm7x99lag4wHxyTuGofNH9hdNV_RV7j7iz--WAEulJsYBAA4TobbEWLpCcCQoZTEiXvO1TtBkp2JpIibHoD6n4EqnXcIIEcinYjkGEiAF9ng31WJL4EG30zZMPHRJxTHWru44e6JbDs3XIZ-uRdo2ZLAcfHhaNVl9UwfG9V2LaTZN3b8firowlr-XkPE9aIPh7CaoDu8LNR5jzkpuv409u8MR9WMcGTd5R9Amd6USCefX0wZlDiJqPGVfiVAZtk1onEK-v77hAAx8RHbXgO7c3oP5HtOyCieBa389Dag_zDsxR7Y-NfZghA8Bj6SsuZVAx4rD2R8ijeRyIArCk8q6mFDARLtCzZpE-Wxr2q_GFxv3glHLcv-Zco3ieT7tFZItlfDnR6xTQCeKeZDFLX28lXMVUI7pq2CLt5SxtlBHrgQqZn_iyaVY3BEtffk4UC7I2swZZP89sGk6sRDwmCwhLoR8JHx9m_mk_FzrrdXNo7gPs79eGPFdx8ZU4Q9VtBDPAeoOI4YgJkYTGKlA2_nhL04Tpghb2RJ0SliD_fQbETx2aWHhC5h8bxAGi8Rs3Rgjtk";
 class NoteCreditController {
