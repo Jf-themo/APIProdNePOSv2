@@ -179,13 +179,17 @@ src/__tests__/
 |----------|--------|-------|
 | `GET /v1/bills` (listar) | ✅ Implementado | Con filtros (page, limit, status, fechas) |
 | `GET /v1/bills/show/:id` | ✅ Implementado | |
-| `DELETE /v1/bills/destroy/:id` | ✅ Implementado | Solo no validadas |
+| `DELETE /v1/bills/destroy/:id` | ✅ Implementado | Por ID |
+| `DELETE /v1/bills/destroy/reference/:reference_code` | ⏳ Fase 4 | Por código de referencia |
 | Descargar PDF | ✅ Implementado | Nuevo endpoint |
 | Descargar XML | ✅ Implementado | Nuevo endpoint |
 | Obtener contenido correo | ⚠️ Pendiente | |
 | Enviar correo | ✅ Implementado | Nuevo endpoint |
-| Eventos de facturas | ⚠️ Pendiente | Aceptación tácita |
-| Aceptación tácita | ⚠️ Pendiente | Endpoint específico |
+| Eventos de facturas | ✅ Implementado | Aceptar, rechazar, aceptar con reclamaciones |
+| Aceptación tácita | ✅ Implementado | Endpoint específico |
+
+**Fase 4 - Pendiente:**
+- Eliminar factura por reference_code (requiere verificar status primero)
 
 ---
 
@@ -377,6 +381,7 @@ const token = await TokenService.getValidToken();
 | 🔴 Crítica | Logging | Winston/Pino estructurado |
 | 🔴 Crítica | Error Handling | Middleware centralizado |
 | 🔴 Crítica | Health Checks | Endpoint de monitoreo |
+| 🟠 Alta | Eliminar Factura por Reference | DELETE /v1/bills/destroy/reference/:reference_code |
 | 🟠 Alta | Rate Limiting | Protección API |
 | 🟠 Alta | Environment Config | Desarrollo vs Producción |
 | 🟡 Media | API Versioning | v1/v2 |
