@@ -6,7 +6,10 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon src/index.ts --exec ts-node",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "keywords": [],
   "author": "",
@@ -14,11 +17,14 @@
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/jest": "^30.0.0",
     "@types/morgan": "^1.9.9",
     "@types/mysql2": "github:types/mysql2",
     "@types/node-fetch": "^2.6.11",
+    "jest": "^30.3.0",
     "jsdoc": "^4.0.3",
     "nodemon": "^3.1.7",
+    "ts-jest": "^29.4.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2"
   },
@@ -31,6 +37,7 @@
     "mysql2": "^3.11.3",
     "nanoid": "^5.0.7",
     "node-fetch": "^3.3.2",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "zod": "^4.3.6"
   }
 }
