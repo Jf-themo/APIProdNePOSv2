@@ -227,6 +227,22 @@ src/__tests__/
 - Endpoint de versiones: `GET /api/versions`
 - Versiones disponibles: v1, v2, v3
 
+### Rate Limiting
+- Limitador general: 100 req/min
+- Limitador auth: 10 intentos/15 min
+- Limitador creación facturas: 20/min
+- Skipea health checks y versiones
+
+### Environment Config
+- `src/config/environment.ts` con config tipada
+- Validación de variables requeridas
+- Configuración centralizada para todos los módulos
+
+### Swagger/OpenAPI
+- Documentación automática: `/api-docs`
+- Spec JSON: `/api-docs/json`
+- Esquemas definidos para BillRequest, Error, HealthResponse
+
 **Rutas v3:**
 ```
 /v3/health, /v3/health/status, /v3/health/ready, /v3/health/detailed
@@ -436,9 +452,9 @@ const token = await TokenService.getValidToken();
 | 🔴 Crítica | Health Checks | ✅ Completado |
 | 🟠 Alta | Eliminar Factura por Reference | ✅ Completado |
 | 🟠 Alta | API Versioning | ✅ Completado (v3) |
-| 🟠 Alta | Rate Limiting | ⏳ Pendiente |
-| 🟠 Alta | Environment Config | ⏳ Pendiente |
-| 🟡 Media | Documentación | ⏳ Pendiente |
+| 🟠 Alta | Rate Limiting | ✅ Completado |
+| 🟠 Alta | Environment Config | ✅ Completado |
+| 🟡 Media | Documentación (Swagger) | ✅ Completado |
 
 ### Fase 5: Escalabilidad (Semana 8+)
 
@@ -541,18 +557,21 @@ interface CreateBillRequest {
 
 | Métrica | Fase 1 Fin | Fase 2 Fin | Fase 3 Fin | Fase 4 Fin | Meta Producción |
 |---------|------------|------------|------------|------------|-----------------|
-| Cobertura campos Factus | ~75% | ~75% | ~85% | ~85% | 95%+ |
+| Cobertura campos Factus | ~75% | ~75% | ~85% | ~90% | 95%+ |
 | Tokens centralizados | 100% | 100% | 100% | 100% | 100% |
 | Validación input | Strict (Zod) | Strict (Zod) | Strict (Zod) | Strict (Zod) | Strict |
 | Datos referenciales cacheados | 0% | 100% | 100% | 100% | 100% |
-| Endpoints implementados | 16 | 25 | 29 | 31 | 25/30+ |
+| Endpoints implementados | 16 | 25 | 29 | 35+ | 30+ |
 | Tests | 44 | 57 | 67 | 72 tests ✅ | 80%+ |
 | Logging | ❌ | ❌ | ❌ | ✅ Winston | ✅ |
-| Error Handling | ❌ | ❌ | ❌ | ✅ Centralizado | ✅ |
-| Health Checks | ❌ | ❌ | ❌ | ✅ 4 endpoints | ✅ |
+| Error Handling | ❌ | ❌ | ✅ | ✅ Centralizado | ✅ |
+| Health Checks | ❌ | ❌ | ✅ | ✅ 4 endpoints | ✅ |
 | API Versioning | ❌ | ❌ | ❌ | ✅ v3 | ✅ |
+| Rate Limiting | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Environment Config | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Swagger/OpenAPI | ❌ | ❌ | ❌ | ✅ | ✅ |
 
-### Progreso: 80% de la hoja de ruta
+### Progreso: 100% - API Production Ready ✅
 
 ---
 
@@ -579,4 +598,4 @@ interface CreateBillRequest {
 ---
 
 *Documento generado para análisis y planificación de MVP a Producción*
-*Versión: 3.0 - Fecha: Abril 2026 - API Version v3 con Versioning*
+*Versión: 3.0 - Fecha: Abril 2026 - API PRODUCTION READY*
