@@ -9,6 +9,7 @@ import {
   DeleteBillSchema
 } from "../utils/validators/bill.validator";
 import { FactusBillResponse, FactusBillData } from "../types/factus";
+import { DeleteBillByReferenceSchema } from "../utils/validators/deleteBill.validator";
 
 const FACTUS_URL = process.env.FACTUS_ENV === "sandbox"
   ? "https://api-sandbox.factus.com.co"
@@ -383,6 +384,76 @@ class BillController {
         }
       } catch (error: any) {
         BillController.handleError(error, res);
+      }
+    }
+];
+
+  public static deleteBillByReference = [
+    validateBody(DeleteBillByReferenceSchema),
+    async (req: Request, res: Response): Promise<void> => {
+      try {
+        const { reference_code } = req.body as any;
+        const token = await TokenService.getValidToken();
+
+        const searchResponse = await axios.get(
+          `${FACTUS_URL}/v1/bills?reference_code=${reference_code}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+        const bills = searchResponse.data?.data?.data || [];
+        
+        if (bills.length === 0) {
+          res.status(404).json({
+            message: `No se encontró factura con código de referencia: ${reference_code}`
+          });
+          return;
+        }
+
+        const bill = bills[0];
+        
+        if (bill.status === 1) {
+          res.status(400).json({
+            message: "La factura está validada y no puede eliminarse",
+            details: {
+              bill_id: bill.id,
+              number: bill.number,
+              reference_code: bill.reference_code,
+              status: "validada"
+            }
+          });
+          return;
+        }
+
+        const deleteResponse = await axios.delete(
+          `${FACTUS_URL}/v1/bills/destroy/reference/${reference_code}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+        if (deleteResponse.status === 200) {
+          res.status(200).json({
+            message: `Factura con código de referencia ${reference_code} eliminada exitosamente`,
+            data: deleteResponse.data
+          });
+        }
+      } catch (error: any) {
+        if (error.response?.status === 404) {
+          res.status(404).json({
+            message: "Factura no encontrada",
+            details: error.response.data
+          });
+        } else {
+          BillController.handleError(error, res);
+        }
       }
     }
   ];

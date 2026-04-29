@@ -5,7 +5,10 @@ import authRoute from "./routes/auth.routes";
 import billRouter from "./routes/bill.routes";
 import noteCreditRoute from "./routes/noteCredit.routes";
 import referenceRoute from "./routes/reference.routes";
+import healthRoute from "./routes/health.routes";
 import cors from "cors";
+import Logger from "./services/Logger";
+import { errorHandler, notFoundHandler, requestIdMiddleware } from "./middleware/errorHandler";
 
 export class App {
   private app: Application;
@@ -17,14 +20,32 @@ export class App {
     this.app.use(express.json());
     this.middlewares();
     this.routes();
+    this.errorHandling();
   }
 
   middlewares() {
-    this.app.use(morgan("dev"));
-    this.app.use(cors()); // Permitir peticiones de cualquier origen
+    this.app.use(requestIdMiddleware);
+    this.app.use(morgan("combined", {
+      stream: {
+        write: (message: string) => {
+          Logger.http(message.trim());
+        }
+      }
+    }));
+    this.app.use(cors());
+    
+    this.app.use((req, res, next) => {
+      Logger.info(`${req.method} ${req.path}`, {
+        ip: req.ip,
+        method: req.method,
+        path: req.path
+      });
+      next();
+    });
   }
 
   routes() {
+    this.app.use(healthRoute);
     this.app.use(userRoute);
     this.app.use(authRoute);
     this.app.use(billRouter);
@@ -32,8 +53,16 @@ export class App {
     this.app.use(referenceRoute);
   }
 
+  errorHandling() {
+    this.app.use(notFoundHandler);
+    this.app.use(errorHandler);
+  }
+
   async listen() {
     await this.app.listen(this.port);
-    console.log("Server on port", this.port);
+    Logger.info(`Server started on port ${this.port}`, {
+      environment: process.env.NODE_ENV || "development",
+      port: this.port
+    });
   }
 }
