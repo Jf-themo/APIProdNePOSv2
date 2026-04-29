@@ -279,6 +279,40 @@ const token = await TokenService.getValidToken();
 
 ## 4. Roadmap de Implementación
 
+---
+
+## 2.2 IMPLEMENTADO - Fase 2: Datos de Referencia (Semana 3)
+
+### Cambios Realizados
+
+| Componente | Estado |
+|------------|--------|
+| **ReferenceDataService** | ✅ Cache en memoria con TTL configurable |
+| **ReferenceController** | ✅ Endpoints para municipios, rangos, unidades, tributos |
+| **Rutas Referencia** | ✅ 9 nuevos endpoints |
+| **Tests ReferenceDataService** | ✅ 13 tests |
+
+### Nuevos Endpoints
+
+| Endpoint | Descripción |
+|----------|-------------|
+| `GET /municipalities` | Lista todos los municipios (cacheable) |
+| `GET /numbering-ranges` | Lista rangos de numeración (cacheable) |
+| `GET /numbering-ranges/:id` | Ver rango específico |
+| `GET /units-of-measure` | Lista unidades de medida (cacheable) |
+| `GET /tributes` | Lista tributos (cacheable) |
+| `GET /countries` | Lista países |
+| `GET /reference-tables` | Tablas de referencia completas |
+| `GET /cache-info` | Ver estado del cache |
+| `POST /clear-cache` | Limpiar cache (todo o específico) |
+
+**Parámetro `?refresh=true`** Fuerza actualización del cache
+
+### Tests Fase 2 (13 tests)
+- ReferenceDataService: 13 tests
+
+---
+
 ### Fase 1: Fundamentos (Semana 1-2) ✅ COMPLETADO
 
 | Prioridad | Tarea | Estado |
@@ -289,15 +323,15 @@ const token = await TokenService.getValidToken();
 | 🟠 Alta | Refactor BillController | ✅ Completado |
 | 🟠 Alta | Refactor NoteCreditController | ✅ Completado |
 
-### Fase 2: Datos de Referencia (Semana 3)
+### Fase 2: Datos de Referencia (Semana 3) ✅ COMPLETADO
 
-| Prioridad | Tarea | Descripción |
-|-----------|-------|-------------|
-| 🟠 Alta | Cache Municipalities | Consultar y cachear municipios |
-| 🟠 Alta | Cache NumberingRanges | Rangos de numeración por empresa |
-| 🟠 Alta | Cache Units | Unidades de medida |
-| 🟠 Alta | Cache Taxes | Tributos disponibles |
-| 🟡 Media | Reference Tables | Tablas de códigos (documentos, pagos, etc.) |
+| Prioridad | Tarea | Estado |
+|-----------|-------|--------|
+| 🟠 Alta | Cache Municipalities | ✅ Completado |
+| 🟠 Alta | Cache NumberingRanges | ✅ Completado |
+| 🟠 Alta | Cache Units | ✅ Completado |
+| 🟠 Alta | Cache Taxes | ✅ Completado |
+| 🟡 Media | Reference Tables | ✅ Completado |
 
 ### Fase 3: Completar Funcionalidad (Semana 4-5)
 
@@ -420,16 +454,16 @@ interface CreateBillRequest {
 
 ## 7. Métricas de Implementación
 
-| Métrica | Fase 1 Inicio | Fase 1 Fin | Meta Producción |
-|---------|---------------|------------|-----------------|
-| Cobertura campos Factus | ~40% | ~75% | 95%+ |
-| Tokens centralizados | 0% | 100% | 100% |
-| Validación input | Ninguna | Strict (Zod) | Strict |
-| Datos referenciales cacheados | 0% | 0% | 100% |
-| Endpoints implementados | 6 | 16 | 25/30+ |
-| Tests | 0 | 44 tests ✅ | 80%+ |
+| Métrica | Fase 1 Fin | Fase 2 Fin | Meta Producción |
+|---------|------------|------------|-----------------|
+| Cobertura campos Factus | ~75% | ~75% | 95%+ |
+| Tokens centralizados | 100% | 100% | 100% |
+| Validación input | Strict (Zod) | Strict (Zod) | Strict |
+| Datos referenciales cacheados | 0% | 100% | 100% |
+| Endpoints implementados | 16 | 25 | 25/30+ |
+| Tests | 44 | 57 tests ✅ | 80%+ |
 
-### Progreso: 33% de la hoja de ruta
+### Progreso: 50% de la hoja de ruta
 
 ---
 
@@ -444,4 +478,4 @@ interface CreateBillRequest {
 ---
 
 *Documento generado para análisis y planificación de MVP a Producción*
-*Versión: 1.0 - Fecha: Abril 2026*
+*Versión: 1.2 - Fecha: Abril 2026 - Fases 1 y 2 Completadas*

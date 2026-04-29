@@ -4,6 +4,7 @@ import userRoute from "./routes/user.routes";
 import authRoute from "./routes/auth.routes";
 import billRouter from "./routes/bill.routes";
 import noteCreditRoute from "./routes/noteCredit.routes";
+import referenceRoute from "./routes/reference.routes";
 import cors from "cors";
 
 export class App {
@@ -28,6 +29,7 @@ export class App {
     this.app.use(authRoute);
     this.app.use(billRouter);
     this.app.use(noteCreditRoute);
+    this.app.use(referenceRoute);
   }
 
   async listen() {
