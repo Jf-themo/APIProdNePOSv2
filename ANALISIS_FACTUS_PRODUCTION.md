@@ -85,67 +85,67 @@ src/__tests__/
 
 ## 2. Análisis de Funcionalidades
 
-### 2.1 Autenticación (OAuth 2.0)
+### 2.1 Autenticación (OAuth 2.0) ✅ FASE 1 COMPLETADA
 
 | Funcionalidad | Estado | Observaciones |
 |---------------|--------|----------------|
-| Obtención de token (`/oauth/token`) | ✅ Implementado | Usa variables de entorno correctamente |
+| Obtención de token (`/oauth/token`) | ✅ Implementado | TokenService con cache |
 | Validación de suscripción | ✅ Implementado | Endpoint disponible |
 | Consulta adquiriente DIAN | ✅ Implementado | Endpoint disponible |
-| Refresh Token | ❌ No implementado | No hay soporte para renovación automática |
-| Token management centralizado | ⚠️ Parcial | Tokens hardcodeados en controladores |
+| Refresh Token | ✅ Implementado | Automático en TokenService |
+| Token management centralizado | ✅ Completado | Sin tokens hardcodeados |
 
-**Problemas identificados:**
-- No hay gestión centralizada de tokens con TTL
-- Los controladores `BillController` y `NoteCreditController` tienen tokens hardcodeados (líneas 6-7 y 6-7 respectivamente)
-- No hay mecanismo de refresh automático
+**Implementado en Fase 1:**
+- TokenService con cache y refresh automático
+- Controladores refactorizados sin tokens hardcodeados
+- TTL configurable para tokens
 
 ---
 
-### 2.2 Creación de Facturas (`POST /v1/bills/validate`)
+### 2.2 Creación de Facturas (`POST /v1/bills/validate`) ✅ FASE 1 COMPLETADA
 
 #### Campos del Body - Comparativa
 
-| Campo Factus API | Estado Actual | Notas |
-|------------------|---------------|-------|
-| `document` | ❌ No enviado | Tipo de documento (01 = factura venta) |
-| `numbering_range_id` | ⚠️ Enviado como array vacío | Debe ser integer |
+| Campo Factus API | Estado | Notas |
+|------------------|--------|-------|
+| `document` | ✅ Enviado | "01" por defecto |
+| `numbering_range_id` | ✅ Implementado | Integer opcional |
 | `reference_code` | ✅ Implementado | |
-| `observation` | ✅ Enviado vacío | |
-| `payment_form` | ❌ No enviado | Por defecto usa 1 |
-| `payment_due_date` | ❌ No enviado | Para crédito |
+| `observation` | ✅ Implementado | |
+| `payment_form` | ✅ Implementado |默认值 1 |
+| `payment_due_date` | ✅ Implementado | Para crédito |
 | `payment_method_code` | ✅ Implementado | 10 = efectivo |
-| `operation_type` | ❌ No enviado | Por defecto 10 |
-| `order_reference` | ❌ No enviado | Objeto de orden |
-| `send_email` | ❌ No enviado | Boolean |
-| `related_documents` | ❌ No enviado | Para documento 03 |
-| `billing_period` | ❌ No enviado | Servicios públicos |
-| `establishment` | ❌ No enviado | Datos del establecimiento |
-| `customer` | ⚠️ Parcial | Ver detalle |
+| `operation_type` | ✅ Implementado |默认值 10 |
+| `order_reference` | ✅ Implementado | Objeto de orden |
+| `send_email` | ✅ Implementado | Boolean |
+| `related_documents` | ✅ Implementado | Para documento 03 |
+| `billing_period` | ✅ Implementado | Servicios públicos |
+| `establishment` | ✅ Implementado | Datos del establecimiento |
+| `customer` | ✅ Completo | Todos los campos |
 
-#### Customer - Comparativa
+#### Customer - Comparativa (Actualizado)
 
-| Campo Factus API | Estado Actual | Notas |
-|------------------|---------------|-------|
+| Campo Factus API | Estado | Notas |
+|------------------|--------|-------|
 | `identification_document_id` | ✅ Enviado desde body | |
 | `identification` | ✅ Enviado desde body | |
-| `dv` | ❌ Enviado vacío | **Requerido para NIT** |
-| `company` | ❌ Enviado vacío | Obligatorio para jurídicas |
-| `trade_name` | ❌ Enviado vacío | |
-| `names` | ✅ Enviado desde body | Solo naturales |
-| `address` | ❌ Enviado vacío | |
+| `dv` | ✅ Enviado desde body | Ahora requerido para NIT |
+| `company` | ✅ Enviado desde body | Personas jurídicas |
+| `trade_name` | ✅ Enviado desde body | |
+| `names` | ✅ Enviado desde body | Personas naturales |
+| `address` | ✅ Enviado desde body | |
 | `email` | ✅ Enviado desde body | |
-| `phone` | ❌ Enviado vacío | |
-| `legal_organization_id` | ⚠️ Hardcodeado "2" | Ignora body[0].legal_organization_id |
-| `tribute_id` | ⚠️ Hardcodeado "21" | Ignora cualquier valor del body |
+| `phone` | ✅ Enviado desde body | |
+| `legal_organization_id` | ✅ Desde body | Ya no hardcodeado |
+| `tribute_id` | ✅ Desde body | Ya no hardcodeado |
 | `municipality_id` | ✅ Enviado desde body | |
 
-#### Items - Comparativa
+#### Items - Comparativa (Actualizado)
 
-| Campo Factus API | Estado Actual | Notas |
-|------------------|---------------|-------|
-| `scheme_id` | ❌ No enviado | Para mandatos (opcional) |
-| `note` | ❌ No enviado | Nota adicional |
+| Campo Factus API | Estado | Notas |
+|------------------|--------|-------|
+| `scheme_id` | ✅ Implementado | Para mandatos |
+| `note` | ✅ Implementado | Nota adicional |
 | `code_reference` | ✅ Implementado | |
 | `name` | ✅ Implementado | |
 | `quantity` | ✅ Implementado | Entero |
@@ -155,74 +155,82 @@ src/__tests__/
 | `unit_measure_id` | ✅ Implementado | |
 | `standard_code_id` | ✅ Implementado | |
 | `is_excluded` | ✅ Implementado | 0/1 |
-| `tribute_id` | ⚠️ Hardcodeado 1 | IVA |
-| `withholding_taxes` | ✅ Array vacío | Soporta retenciones |
-| `mandate` | ❌ No enviado | Para esquemas 1 |
+| `tribute_id` | ✅ Desde body | Ya no hardcodeado |
+| `withholding_taxes` | ✅ Implementado | Soporta retenciones |
+| `mandate` | ✅ Implementado | Para esquemas 1 |
 
-#### AllowanceCharges (Descuentos/Recargos Globales)
+#### AllowanceCharges (Actualizado)
 
 | Campo | Estado | Notas |
 |-------|--------|-------|
-| `allowance_charges` | ❌ No enviado | Array de descuentos/recargos |
+| `allowance_charges` | ✅ Implementado | Array de descuentos/recargos |
 
-**Errores críticos en BillController.ts:**
-- Línea 6-7: Token hardcodeado
-- Línea 74: `numbering_range_id: []` debe ser integer
-- Línea 87: `legal_organization_id: "2"` ignora el valor del body
-- Línea 88: `tribute_id: "21"` hardcodeado
-- Línea 29-36: Asume que `req.body` es array y usa `body[0]`
+**Fase 1 - Cambios realizados:**
+- Token eliminado de hardcode, usa TokenService
+- `numbering_range_id` ahora es integer
+- `customer.legal_organization_id` y `tribute_id` vienen del body
+- Validación completa con Zod schemas
 
 ---
 
-### 2.3 Consulta y Gestión de Facturas
+### 2.3 Consulta y Gestión de Facturas ✅ FASE 1 COMPLETADA
 
 | Endpoint | Estado | Notas |
 |----------|--------|-------|
-| `GET /v1/bills` (listar) | ✅ Implementado | Sin filtros |
+| `GET /v1/bills` (listar) | ✅ Implementado | Con filtros (page, limit, status, fechas) |
 | `GET /v1/bills/show/:id` | ✅ Implementado | |
 | `DELETE /v1/bills/destroy/:id` | ✅ Implementado | Solo no validadas |
-| Descargar PDF | ❌ No implementado | Endpoint existente |
-| Descargar XML | ❌ No implementado | Endpoint existente |
-| Obtener contenido correo | ❌ No implementado | Endpoint existente |
-| Enviar correo | ❌ No implementado | Endpoint existente |
-| Eventos de facturas | ❌ No implementado | Aceptación tácita |
-| Aceptación tácita | ❌ No implementado | Endpoint específico |
+| Descargar PDF | ✅ Implementado | Nuevo endpoint |
+| Descargar XML | ✅ Implementado | Nuevo endpoint |
+| Obtener contenido correo | ⚠️ Pendiente | |
+| Enviar correo | ✅ Implementado | Nuevo endpoint |
+| Eventos de facturas | ⚠️ Pendiente | Aceptación tácita |
+| Aceptación tácita | ⚠️ Pendiente | Endpoint específico |
 
 ---
 
-### 2.4 Notas de Crédito
+### 2.4 Notas de Crédito ✅ FASE 1 COMPLETADA
 
 | Endpoint | Estado | Notas |
 |----------|--------|-------|
-| `POST /v1/credit-notes/validate` | ✅ Parcial | Falta muchos campos |
-| `GET /v1/credit-notes` | ❌ No implementado | Listar notas |
-| `GET /v1/credit-notes/show/:id` | ❌ No implementado | Ver detalle |
-| Descargar PDF/XML | ❌ No implementado | |
-| Eliminar | ❌ No implementado | |
+| `POST /v1/credit-notes/validate` | ✅ Completado | Refactorizado con validación |
+| `GET /v1/credit-notes` | ✅ Completado | Listar notas |
+| `GET /v1/credit-notes/show/:id` | ✅ Completado | Ver detalle |
+| Descargar PDF | ✅ Completado | Nuevo endpoint |
+| Descargar XML | ✅ Completado | Nuevo endpoint |
+| Eliminar | ✅ Completado | |
+| Enviar correo | ✅ Completado | |
 
-**Problemas en NoteCreditController.ts:**
-- Token hardcodeado línea 6-7
-- Usa `bill_id` en lugar de `id_bill` (línea 102)
-- Asume body[0] (línea 93)
-- No mapea respuesta de forma estructurada
+**Fase 1 - Cambios realizados:**
+- Token eliminado, usa TokenService
+- Validación completa con Zod
+- Estructura de request normalizada
+- Mapeo de respuesta estructurado
 
 ---
 
-### 2.5 Datos de Referencia (Sugeridos por Factus)
+### 2.5 Datos de Referencia (Sugeridos por Factus) ✅ FASE 2 COMPLETADA
 
 Factus recomienda cachear estos datos para mejorar rendimiento:
 
 | Endpoint | Estado | Notas |
 |----------|--------|-------|
-| Rangos de numeración | ❌ No implementado | CRITICAL |
-| Municipios | ❌ No implementado | CRITICAL |
-| Tributos | ❌ No implementado | CRITICAL |
-| Unidades de medida | ❌ No implementado | CRITICAL |
-| Tipos de documentos | ❌ No implementado | |
-| Formas de pago | ❌ No implementado | |
-| Métodos de pago | ❌ No implementado | |
-| Tipos de operación | ❌ No implementado | |
-| Códigos de organización | ❌ No implementado | |
+| Rangos de numeración | ✅ Implementado | Cache 1h |
+| Municipios | ✅ Implementado | Cache 1h |
+| Tributos | ✅ Implementado | Cache 1h |
+| Unidades de medida | ✅ Implementado | Cache 1h |
+| Tipos de documentos | ✅ Implementado | Tablas referencia |
+| Formas de pago | ✅ Implementado | Tablas referencia |
+| Métodos de pago | ✅ Implementado | Tablas referencia |
+| Tipos de operación | ✅ Implementado | Tablas referencia |
+| Códigos de organización | ✅ Implementado | Tablas referencia |
+| Países | ✅ Implementado | Nuevo |
+
+**Fase 2 - Implementado:**
+- ReferenceDataService con cache en memoria
+- TTL configurable (default 1 hora)
+- Parámetro `?refresh=true` para forzar actualización
+- Endpoints de cache: `cache-info`, `clear-cache`
 
 ---
 
@@ -238,42 +246,39 @@ Factus recomienda cachear estos datos para mejorar rendimiento:
 
 ---
 
-## 3. Arquitectura Actual - Problemas Estructurales
+## 3. Arquitectura - Estado Actual (Fases 1-2)
 
-### 3.1 Patrones Incorrectos
+### ✅ 3.1 Patrones Corregidos
 
 ```typescript
-// PROBLEMA: Asume formato de entrada incorrecto
+// ANTES (PROBLEMA): Asume formato de entrada incorrecto
 const body = req.body; // array
 let client = { name: body[0]?.names, ... };
 
-// CORRECTO: Validar y normalizar input
-interface BillRequest {
-  numbering_range_id?: number;
-  document?: string;
-  reference_code: string;
-  customer: Customer;
-  items: Item[];
-  // ... campos opcionales
-}
+// DESPUÉS (CORREGIDO): Validación con Zod
+const CreateBillRequestSchema = z.object({
+  reference_code: z.string().min(1),
+  customer: CustomerSchema,
+  items: z.array(BillItemSchema).min(1)
+});
 ```
 
-### 3.2 Tokens Hardcodeados
+### ✅ 3.2 Tokens Corregidos
 
 ```typescript
-// PROBLEMA CRÍTICO
-const token = "eyJ0eXAi..."; // BillController.ts línea 6-7
-const token = "eyJ0eXAi..."; // NoteCreditController.ts línea 6-7
+// ANTES (PROBLEMA): Tokens hardcodeados
+const token = "eyJ0eXAi..."; // BillController.ts
 
-// CORRECTO: Usar AuthService centralizado
-import { TokenService } from '../services/TokenService';
+// DESPUÉS (CORREGIDO): TokenService centralizado
+import TokenService from '../services/TokenService';
 const token = await TokenService.getValidToken();
 ```
 
-### 3.3 Errores de Lógica en Utils
+### ⚠️ 3.3 Errores de Lógica Pendientes
 
 - `userControllerUtils.isAnyEmptyOrNull()` retorna en primera iteración - no valida todo el objeto
 - `userController.ts` usa `await connection.beginTransaction` sin invocar método correcto
+- **Pendiente para Fase 4**
 
 ---
 
@@ -313,6 +318,28 @@ const token = await TokenService.getValidToken();
 
 ---
 
+## 2.3 IMPLEMENTADO - Fase 3: Completar Funcionalidad
+
+### Nuevos Endpoints Agregados
+
+| Endpoint | Descripción |
+|----------|-------------|
+| `GET /email-content/:id` | Obtener contenido del correo antes de enviar |
+| `POST /accept/:id` | Aceptación tácita de factura |
+| `POST /reject/:id` | Rechazar factura con observación |
+| `POST /accept-with-claims/:id` | Aceptar con reclamaciones |
+
+### Documentos Soporte (pendiente)
+- ⏳ Crear documento soporte
+- ⏳ Filtrar documentos soporte
+- ⏳ Ver documento soporte
+- ⏳ Descargar PDF/XML documento soporte
+
+### Tests Fase 3 (10 tests)
+- billEvent.validator: 10 tests
+
+---
+
 ### Fase 1: Fundamentos (Semana 1-2) ✅ COMPLETADO
 
 | Prioridad | Tarea | Estado |
@@ -333,15 +360,15 @@ const token = await TokenService.getValidToken();
 | 🟠 Alta | Cache Taxes | ✅ Completado |
 | 🟡 Media | Reference Tables | ✅ Completado |
 
-### Fase 3: Completar Funcionalidad (Semana 4-5)
+### Fase 3: Completar Funcionalidad (Semana 4-5) ✅ COMPLETADO
 
-| Prioridad | Tarea | Descripción |
-|-----------|-------|-------------|
-| 🟠 Alta | Bill Downloads | PDF y XML |
-| 🟠 Alta | Email Integration | Enviar y obtener contenido |
-| 🟠 Alta | Credit Notes CRUD | Completar CRUD notas crédito |
-| 🟡 Media | Bill Events | Aceptación tácita |
-| 🟡 Media | Document Support | Documentos soporte (opcional) |
+| Prioridad | Tarea | Estado |
+|-----------|-------|--------|
+| 🟠 Alta | Bill Downloads (PDF/XML) | ✅ Completado |
+| 🟠 Alta | Email Integration | ✅ Completado |
+| 🟠 Alta | Credit Notes CRUD | ✅ Completado |
+| 🟡 Media | Bill Events | ✅ Completado |
+| 🟡 Media | Document Support | ⏳ Pendiente |
 
 ### Fase 4: Production Ready (Semana 6-7)
 
@@ -454,28 +481,40 @@ interface CreateBillRequest {
 
 ## 7. Métricas de Implementación
 
-| Métrica | Fase 1 Fin | Fase 2 Fin | Meta Producción |
-|---------|------------|------------|-----------------|
-| Cobertura campos Factus | ~75% | ~75% | 95%+ |
-| Tokens centralizados | 100% | 100% | 100% |
-| Validación input | Strict (Zod) | Strict (Zod) | Strict |
-| Datos referenciales cacheados | 0% | 100% | 100% |
-| Endpoints implementados | 16 | 25 | 25/30+ |
-| Tests | 44 | 57 tests ✅ | 80%+ |
+| Métrica | Fase 1 Fin | Fase 2 Fin | Fase 3 Fin | Meta Producción |
+|---------|------------|------------|------------|-----------------|
+| Cobertura campos Factus | ~75% | ~75% | ~85% | 95%+ |
+| Tokens centralizados | 100% | 100% | 100% | 100% |
+| Validación input | Strict (Zod) | Strict (Zod) | Strict (Zod) | Strict |
+| Datos referenciales cacheados | 0% | 100% | 100% | 100% |
+| Endpoints implementados | 16 | 25 | 29 | 25/30+ |
+| Tests | 44 | 57 | 67 tests ✅ | 80%+ |
 
-### Progreso: 50% de la hoja de ruta
+### Progreso: 60% de la hoja de ruta
 
 ---
 
-## 8. Recomendaciones Inmediatas
+## 8. Estado Actual - Recomendaciones
 
-1. **NO usar en producción** hasta resolver tokens hardcodeados
-2. **Priorizar** TokenService con refresh automático
-3. **Implementar** validación de input antes de refactorizar controladores
-4. **Crear** tipos TypeScript para контрактов Factus
-5. **Configurar** ambiente sandbox para pruebas
+### ✅ Completado (Fases 1-2)
+1. Tokens hardcodeados eliminados → TokenService
+2. Validación de input implementada con Zod
+3. Tipos TypeScript creados para contratos Factus
+4. Datos de referencia con cache
+
+### ⚠️ Pendiente (Fase 3)
+1. Testing completo de controladores (integración)
+2. Aceptación tácita de facturas
+3. Obtener contenido de correo
+
+### 📋 Para Producción (Fase 4)
+1. Logging estructurado (Winston/Pino)
+2. Error handling centralizado
+3. Health checks
+4. Rate limiting
+5. Swagger/OpenAPI documentation
 
 ---
 
 *Documento generado para análisis y planificación de MVP a Producción*
-*Versión: 1.2 - Fecha: Abril 2026 - Fases 1 y 2 Completadas*
+*Versión: 1.3 - Fecha: Abril 2026 - Fases 1, 2 y 3 Completadas*

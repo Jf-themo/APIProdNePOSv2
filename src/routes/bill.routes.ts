@@ -10,5 +10,9 @@ route.delete("/delete-bill", BillController.deleteBill as any);
 route.get("/download-pdf/:id", BillController.downloadPdf as any);
 route.get("/download-xml/:id", BillController.downloadXml as any);
 route.post("/send-email/:id", BillController.sendEmail as any);
+route.get("/email-content/:id", BillController.getEmailContent as any);
+route.post("/accept/:id", BillController.acceptBill as any);
+route.post("/reject/:id", BillController.rejectBill as any);
+route.post("/accept-with-claims/:id", BillController.acceptWithClaims as any);
 
 export default route;

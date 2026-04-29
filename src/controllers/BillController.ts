@@ -262,6 +262,131 @@ class BillController {
     }
   ];
 
+  public static getEmailContent = [
+    validateParams(BillIdParamSchema),
+    async (req: Request, res: Response): Promise<void> => {
+      try {
+        const { id } = req.params;
+        const token = await TokenService.getValidToken();
+
+        const response = await axios.get(
+          `${FACTUS_URL}/v1/bills/${id}/email-content`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json"
+            }
+          }
+        );
+
+        if (response.status === 200) {
+          res.status(200).json({
+            message: "Contenido de correo obtenido",
+            data: response.data.data
+          });
+        }
+      } catch (error: any) {
+        BillController.handleError(error, res);
+      }
+    }
+  ];
+
+  public static acceptBill = [
+    validateParams(BillIdParamSchema),
+    async (req: Request, res: Response): Promise<void> => {
+      try {
+        const { id } = req.params;
+        const token = await TokenService.getValidToken();
+
+        const response = await axios.post(
+          `${FACTUS_URL}/v1/bills/${id}/accept`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+        if (response.status === 200) {
+          res.status(200).json({
+            message: "Factura aceptada exitosamente",
+            data: response.data
+          });
+        }
+      } catch (error: any) {
+        BillController.handleError(error, res);
+      }
+    }
+  ];
+
+  public static rejectBill = [
+    validateParams(BillIdParamSchema),
+    async (req: Request, res: Response): Promise<void> => {
+      try {
+        const { id } = req.params;
+        const { observation } = req.body;
+        const token = await TokenService.getValidToken();
+
+        const response = await axios.post(
+          `${FACTUS_URL}/v1/bills/${id}/reject`,
+          { observation: observation || "" },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+        if (response.status === 200) {
+          res.status(200).json({
+            message: "Factura rechazada",
+            data: response.data
+          });
+        }
+      } catch (error: any) {
+        BillController.handleError(error, res);
+      }
+    }
+  ];
+
+  public static acceptWithClaims = [
+    validateParams(BillIdParamSchema),
+    async (req: Request, res: Response): Promise<void> => {
+      try {
+        const { id } = req.params;
+        const { claim_type, claim_description } = req.body;
+        const token = await TokenService.getValidToken();
+
+        const response = await axios.post(
+          `${FACTUS_URL}/v1/bills/${id}/accept-with-claims`,
+          {
+            claim_type: claim_type || 1,
+            claim_description: claim_description || ""
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+        if (response.status === 200) {
+          res.status(200).json({
+            message: "Factura aceptada con reclamaciones",
+            data: response.data
+          });
+        }
+      } catch (error: any) {
+        BillController.handleError(error, res);
+      }
+    }
+  ];
+
   private static handleError(error: any, res: Response): void {
     console.error("[BillController] Error:", error.message);
 
