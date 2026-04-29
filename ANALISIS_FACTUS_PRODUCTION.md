@@ -221,6 +221,26 @@ src/__tests__/
 - Verifica status de factura antes de eliminar
 - Solo elimina facturas no validadas (status=0)
 
+### API Versioning (v3)
+- Rutas con prefijo `/v3/`
+- Headers: `X-API-Version`, `X-API-Features`
+- Endpoint de versiones: `GET /api/versions`
+- Versiones disponibles: v1, v2, v3
+
+**Rutas v3:**
+```
+/v3/health, /v3/health/status, /v3/health/ready, /v3/health/detailed
+/v3/bills, /v3/bills/:id, /v3/bills/:id/pdf, /v3/bills/:id/xml
+/v3/bills/:id/send-email, /v3/bills/:id/email-content
+/v3/bills/:id/accept, /v3/bills/:id/reject, /v3/bills/:id/accept-with-claims
+/v3/credit-notes, /v3/credit-notes/:id
+/v3/credit-notes/:id/pdf, /v3/credit-notes/:id/xml, /v3/credit-notes/:id/send-email
+/v3/reference/municipalities, /v3/reference/numbering-ranges
+/v3/reference/units-of-measure, /v3/reference/tributes
+/v3/reference/countries, /v3/reference/reference-tables
+/v3/reference/cache-info, /v3/reference/clear-cache
+```
+
 ### Nuevos Tests (5)
 - deleteBill.validator.ts: 5 tests
 
@@ -415,9 +435,9 @@ const token = await TokenService.getValidToken();
 | 🔴 Crítica | Error Handling | ✅ Completado |
 | 🔴 Crítica | Health Checks | ✅ Completado |
 | 🟠 Alta | Eliminar Factura por Reference | ✅ Completado |
+| 🟠 Alta | API Versioning | ✅ Completado (v3) |
 | 🟠 Alta | Rate Limiting | ⏳ Pendiente |
 | 🟠 Alta | Environment Config | ⏳ Pendiente |
-| 🟡 Media | API Versioning | ⏳ Pendiente |
 | 🟡 Media | Documentación | ⏳ Pendiente |
 
 ### Fase 5: Escalabilidad (Semana 8+)
@@ -530,8 +550,9 @@ interface CreateBillRequest {
 | Logging | ❌ | ❌ | ❌ | ✅ Winston | ✅ |
 | Error Handling | ❌ | ❌ | ❌ | ✅ Centralizado | ✅ |
 | Health Checks | ❌ | ❌ | ❌ | ✅ 4 endpoints | ✅ |
+| API Versioning | ❌ | ❌ | ❌ | ✅ v3 | ✅ |
 
-### Progreso: 75% de la hoja de ruta
+### Progreso: 80% de la hoja de ruta
 
 ---
 
@@ -558,4 +579,4 @@ interface CreateBillRequest {
 ---
 
 *Documento generado para análisis y planificación de MVP a Producción*
-*Versión: 1.4 - Fecha: Abril 2026 - Fases 1, 2, 3 y 4 Completadas*
+*Versión: 3.0 - Fecha: Abril 2026 - API Version v3 con Versioning*

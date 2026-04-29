@@ -6,9 +6,11 @@ import billRouter from "./routes/bill.routes";
 import noteCreditRoute from "./routes/noteCredit.routes";
 import referenceRoute from "./routes/reference.routes";
 import healthRoute from "./routes/health.routes";
+import v3Router from "./routes/v3.routes";
 import cors from "cors";
 import Logger from "./services/Logger";
 import { errorHandler, notFoundHandler, requestIdMiddleware } from "./middleware/errorHandler";
+import { apiVersionMiddleware, getAllVersions, getLatestVersion } from "./middleware/apiVersion";
 
 export class App {
   private app: Application;
@@ -25,6 +27,7 @@ export class App {
 
   middlewares() {
     this.app.use(requestIdMiddleware);
+    this.app.use(apiVersionMiddleware);
     this.app.use(morgan("combined", {
       stream: {
         write: (message: string) => {
@@ -46,6 +49,17 @@ export class App {
 
   routes() {
     this.app.use(healthRoute);
+    
+    this.app.get("/api/versions", (req, res) => {
+      res.json({
+        versions: getAllVersions(),
+        latest: getLatestVersion(),
+        default: getLatestVersion()
+      });
+    });
+    
+    this.app.use("/v3", v3Router);
+    
     this.app.use(userRoute);
     this.app.use(authRoute);
     this.app.use(billRouter);
@@ -62,7 +76,8 @@ export class App {
     await this.app.listen(this.port);
     Logger.info(`Server started on port ${this.port}`, {
       environment: process.env.NODE_ENV || "development",
-      port: this.port
+      port: this.port,
+      apiVersion: getLatestVersion()
     });
   }
 }
