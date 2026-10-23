@@ -167,42 +167,6 @@ describe("Bill Validators", () => {
       expect(result.success).toBe(true);
     });
 
-    it("should accept the v2 single-bill array payload", () => {
-      const billRequest = [{
-        reference_code: "REF-001",
-        customer: {
-          identification: "123456789",
-          legal_organization_id: 2,
-          tribute_id: 21,
-          identification_document_id: 1
-        },
-        items: [{
-          code_reference: "PROD001",
-          name: "Producto",
-          quantity: 1,
-          price: 50000,
-          unit_measure_id: 70,
-          standard_code_id: 1,
-          tribute_id: 1
-        }]
-      }];
-
-      const result = CreateBillRequestSchema.safeParse(billRequest);
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect(result.data.reference_code).toBe("REF-001");
-      }
-    });
-
-    it("should reject arrays containing multiple bills", () => {
-      const billRequest = [
-        { reference_code: "REF-001" },
-        { reference_code: "REF-002" }
-      ];
-
-      expect(CreateBillRequestSchema.safeParse(billRequest).success).toBe(false);
-    });
-
     it("should fail when items array is empty", () => {
       const billRequest = {
         reference_code: "REF-001",

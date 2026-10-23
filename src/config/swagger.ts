@@ -35,7 +35,7 @@ export const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 export const swaggerUiOptions = {
   swaggerOptions: {
-    urls: [{ url: "/api-docs/json", name: "NeoApp API v3" }]
+    urls: [{ url: "/api-docs.json", name: "NeoApp API v3" }]
   },
   customCss: ".swagger-ui .topbar { display: none }"
 };

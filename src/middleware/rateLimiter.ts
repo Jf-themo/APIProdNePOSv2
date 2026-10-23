@@ -27,7 +27,7 @@ export const generalLimiter = rateLimit({
 
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: parseInt(process.env.AUTH_RATE_LIMIT_MAX_REQUESTS || "60", 10),
+  limit: 10,
   message: (req: Request, res: Response) => {
     Logger.warn(`Auth rate limit exceeded for IP: ${req.ip}`);
     return {

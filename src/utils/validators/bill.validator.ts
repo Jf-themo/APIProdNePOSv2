@@ -53,7 +53,7 @@ export const AllowanceChargeSchema = z.object({
   amount: z.union([z.number(), z.string()])
 });
 
-const CreateBillRequestObjectSchema = z.object({
+export const CreateBillRequestSchema = z.object({
   numbering_range_id: z.number().int().positive().optional(),
   document: z.string().optional(),
   reference_code: z.string().min(1, "Código de referencia requerido"),
@@ -70,11 +70,6 @@ const CreateBillRequestObjectSchema = z.object({
   allowance_charges: z.array(AllowanceChargeSchema).optional().default([])
 });
 
-export const CreateBillRequestSchema = z.preprocess(
-  (body) => Array.isArray(body) && body.length === 1 ? body[0] : body,
-  CreateBillRequestObjectSchema
-);
-
 export const GetBillsQuerySchema = z.object({
   page: z.coerce.number().int().positive().optional().default(1),
   limit: z.coerce.number().int().min(1).max(100).optional().default(20),
@@ -88,7 +83,7 @@ export const BillIdParamSchema = z.object({
 });
 
 export const DeleteBillSchema = z.object({
-  id: z.coerce.number().int().positive("ID requerido"),
+  id: z.number().int().positive("ID requerido"),
   tokenRequest: z.string().optional()
 });
 

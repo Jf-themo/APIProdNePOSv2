@@ -47,9 +47,7 @@ class Logger {
       })
     ];
 
-    const isServerless = !!process.env.VERCEL || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
-
-    if (Logger.environment !== "test" && !isServerless) {
+    if (Logger.environment !== "test") {
       transports.push(
         new winston.transports.File({
           filename: path.join(logDir, "error.log"),
