@@ -406,12 +406,17 @@ Hay tres formas de especificar la versión:
 # v3 (recomendado)
 GET http://localhost:3000/v3/bills
 
-# v2
+# v2 (compatibilidad)
 GET http://localhost:3000/v2/bills
+POST http://localhost:3000/v2/bills
 
 # v1 (legacy)
 GET http://localhost:3000/v1/bills
 ```
+
+La v2 también conserva las rutas legacy en raíz, por ejemplo `POST /create-bill`.
+Para crear una factura, se acepta el cuerpo de factura como objeto o como un arreglo
+con un único objeto. Los arreglos con más de una factura no son compatibles.
 
 #### 2. Via Header
 ```bash
@@ -474,7 +479,7 @@ Accept: application/json
 | AUTH_TOKEN_EXPIRED | Token expirado | El token ya venció | Obtener nuevo token |
 | AUTH_TOKEN_INVALID | Token inválido | Token mal formado o manipulado | Obtener nuevo token |
 | AUTH_CREDENTIALS_INVALID | Credenciales inválidas | USER/PASSWORD incorrectos en Factus | Verificar credenciales |
-| AUTH_RATE_LIMIT_EXCEEDED | Demasiados intentos | Más de 10 intentos en 15 min | Esperar 15 minutos |
+| AUTH_RATE_LIMIT_EXCEEDED | Demasiados intentos | Más de 60 intentos en 15 min | Esperar 15 minutos |
 
 #### Errores de Validación
 
@@ -501,7 +506,7 @@ Accept: application/json
 |--------|-------------|-------|----------|
 | RATE_LIMIT_EXCEEDED | Límite general excedido | Más de 100 requests/min | Reducir frecuencia |
 | BILL_CREATE_LIMIT_EXCEEDED | Límite de creación excedido | Más de 20 facturas/min | Reducir frecuencia |
-| AUTH_RATE_LIMIT_EXCEEDED | Límite de auth excedido | Más de 10 intentos/15min | Esperar 15 minutos |
+| AUTH_RATE_LIMIT_EXCEEDED | Límite de auth excedido | Más de 60 intentos/15min | Esperar 15 minutos |
 
 ### Estructura de Respuesta de Error
 
@@ -1930,7 +1935,7 @@ X-API-Version: v3
 | Tipo | Límite | Ventana | Descripción |
 |------|--------|---------|-------------|
 | General | 100 | 1 minuto | Cualquier endpoint |
-| Autenticación | 10 | 15 minutos | /auth/* |
+| Autenticación | 60 | 15 minutos | /auth/*, /get-token |
 | Creación de Facturas | 20 | 1 minuto | POST /v3/bills |
 
 ### Estructura de Respuesta de Rate Limit Excedido
@@ -1979,7 +1984,7 @@ X-RateLimit-Reset: 1714407600
 | NODE_ENV | development | Ambiente de Node |
 | RATE_LIMIT_WINDOW_MS | 60000 | Ventana de rate limit (ms) |
 | RATE_LIMIT_MAX_REQUESTS | 100 | Máximo de requests por ventana |
-| RATE_LIMIT_AUTH | 10 | Límite de auth |
+| AUTH_RATE_LIMIT_MAX_REQUESTS | 60 | Máximo de solicitudes de autenticación por 15 minutos |
 | BILL_CREATE_LIMIT | 20 | Límite de creación de facturas |
 | CACHE_TTL | 3600000 | TTL del cache (ms) |
 
@@ -2000,7 +2005,7 @@ NODE_ENV=development
 # Rate Limiting
 RATE_LIMIT_WINDOW_MS=60000
 RATE_LIMIT_MAX_REQUESTS=100
-RATE_LIMIT_AUTH=10
+AUTH_RATE_LIMIT_MAX_REQUESTS=60
 BILL_CREATE_LIMIT=20
 
 # Cache

@@ -1,9 +1,10 @@
 import { Router, Request, Response } from "express";
 import BillController from "../controllers/BillController";
+import { apiLimiter } from "../middleware/rateLimiter";
 
 const route = Router();
 
-route.post("/create-bill", BillController.createBill as any);
+route.post("/create-bill", apiLimiter.billCreate, BillController.createBill as any);
 route.get("/get-bills", BillController.getBills as any);
 route.get("/get-bill-by-id/:id", BillController.getBillById as any);
 

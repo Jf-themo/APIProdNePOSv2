@@ -3,6 +3,7 @@ import BillController from "../controllers/BillController";
 import NoteCreditController from "../controllers/NoteCreditController";
 import ReferenceController from "../controllers/ReferenceController";
 import HealthController from "../controllers/HealthController";
+import { apiLimiter } from "../middleware/rateLimiter";
 
 const v3 = Router();
 
@@ -11,7 +12,7 @@ v3.get("/health/status", HealthController.check);
 v3.get("/health/ready", HealthController.ready);
 v3.get("/health/detailed", HealthController.detailed);
 
-v3.post("/bills", BillController.createBill as any);
+v3.post("/bills", apiLimiter.billCreate, BillController.createBill as any);
 v3.get("/bills", BillController.getBills as any);
 v3.get("/bills/:id", BillController.getBillById as any);
 v3.delete("/bills", BillController.deleteBill as any);
