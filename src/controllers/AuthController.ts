@@ -6,8 +6,9 @@ import axios, { AxiosResponse } from "axios";
 
 config();
 
-const url: string = "https://api.factus.com.co";
-// const url: string = "https://api-sandbox.factus.com.co";
+const url: string = process.env.FACTUS_ENV === "sandbox"
+  ? "https://api-sandbox.factus.com.co"
+  : "https://api.factus.com.co";
 
 class AuthController {
   /**

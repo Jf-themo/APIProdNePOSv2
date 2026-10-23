@@ -4,7 +4,16 @@ import userRoute from "./routes/user.routes";
 import authRoute from "./routes/auth.routes";
 import billRouter from "./routes/bill.routes";
 import noteCreditRoute from "./routes/noteCredit.routes";
+import referenceRoute from "./routes/reference.routes";
+import healthRoute from "./routes/health.routes";
+import v3Router from "./routes/v3.routes";
+import docsRoute from "./routes/docs.routes";
 import cors from "cors";
+import Logger from "./services/Logger";
+import { errorHandler, notFoundHandler, requestIdMiddleware } from "./middleware/errorHandler";
+import { apiVersionMiddleware, getAllVersions, getLatestVersion } from "./middleware/apiVersion";
+import { apiLimiter } from "./middleware/rateLimiter";
+import config, { validateConfig } from "./config/environment";
 
 export class App {
   private app: Application;
@@ -16,22 +25,73 @@ export class App {
     this.app.use(express.json());
     this.middlewares();
     this.routes();
+    this.errorHandling();
+    
+    if (!validateConfig()) {
+      Logger.error("Invalid configuration. Please check environment variables.");
+    }
   }
 
   middlewares() {
-    this.app.use(morgan("dev"));
-    this.app.use(cors()); // Permitir peticiones de cualquier origen
+    this.app.use(requestIdMiddleware);
+    this.app.use(apiVersionMiddleware);
+    this.app.use(apiLimiter.general);
+    this.app.use(morgan("combined", {
+      stream: {
+        write: (message: string) => {
+          Logger.http(message.trim());
+        }
+      }
+    }));
+    this.app.use(cors({
+      origin: config.cors.origin,
+      credentials: config.cors.credentials
+    }));
+    
+    this.app.use((req, res, next) => {
+      Logger.info(`${req.method} ${req.path}`, {
+        ip: req.ip,
+        method: req.method,
+        path: req.path
+      });
+      next();
+    });
   }
 
   routes() {
+    this.app.use("/api-docs", docsRoute);
+    this.app.use(healthRoute);
+    
+    this.app.get("/api/versions", (req, res) => {
+      res.json({
+        versions: getAllVersions(),
+        latest: getLatestVersion(),
+        default: getLatestVersion()
+      });
+    });
+    
+    this.app.use("/v3", v3Router);
+    
+    this.app.use("/auth", apiLimiter.auth, authRoute);
+    this.app.use("/bills", apiLimiter.billCreate, billRouter);
+    
     this.app.use(userRoute);
-    this.app.use(authRoute);
-    this.app.use(billRouter);
     this.app.use(noteCreditRoute);
+    this.app.use(referenceRoute);
+  }
+
+  errorHandling() {
+    this.app.use(notFoundHandler);
+    this.app.use(errorHandler);
   }
 
   async listen() {
     await this.app.listen(this.port);
-    console.log("Server on port", this.port);
+    Logger.info(`Server started on port ${this.port}`, {
+      environment: config.env,
+      port: this.port,
+      apiVersion: getLatestVersion(),
+      rateLimit: config.rateLimit
+    });
   }
 }

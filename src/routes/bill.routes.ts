@@ -1,12 +1,19 @@
 import { Router } from "express";
-
 import BillController from "../controllers/BillController";
 
 const route = Router();
 
-route.route("/create-bill").post(BillController.createBill);
-route.route("/get-bills").get(BillController.getBills);
-route.route("/get-bill-by-id").post(BillController.getBillById);
-route.route("/delete-bill").delete(BillController.deteleBill);
+route.post("/create-bill", BillController.createBill as any);
+route.get("/get-bills", BillController.getBills as any);
+route.get("/get-bill-by-id/:id", BillController.getBillById as any);
+route.delete("/delete-bill", BillController.deleteBill as any);
+route.delete("/delete-bill-by-reference", BillController.deleteBillByReference as any);
+route.get("/download-pdf/:id", BillController.downloadPdf as any);
+route.get("/download-xml/:id", BillController.downloadXml as any);
+route.post("/send-email/:id", BillController.sendEmail as any);
+route.get("/email-content/:id", BillController.getEmailContent as any);
+route.post("/accept/:id", BillController.acceptBill as any);
+route.post("/reject/:id", BillController.rejectBill as any);
+route.post("/accept-with-claims/:id", BillController.acceptWithClaims as any);
 
 export default route;
