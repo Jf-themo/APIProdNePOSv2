@@ -67,7 +67,7 @@ class BillController {
             note: item.note,
             scheme_id: item.scheme_id
           })),
-          allowance_charges: body.allowance_charges || []
+          ...(body.allowance_charges?.length ? { allowance_charges: body.allowance_charges } : {})
         };
 
         const response = await axios.post<FactusBillResponse>(
