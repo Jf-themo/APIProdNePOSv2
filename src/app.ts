@@ -75,6 +75,10 @@ export class App {
     this.app.use("/auth", apiLimiter.auth, authRoute);
     this.app.use("/bills", apiLimiter.billCreate, billRouter);
     
+    // Compatibilidad v2: rutas legacy en raíz (sin prefijo /auth, /bills)
+    this.app.use("/", apiLimiter.auth, authRoute);
+    this.app.use("/", apiLimiter.billCreate, billRouter);
+    
     this.app.use(userRoute);
     this.app.use(noteCreditRoute);
     this.app.use(referenceRoute);

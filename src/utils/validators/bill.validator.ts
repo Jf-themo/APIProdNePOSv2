@@ -83,7 +83,7 @@ export const BillIdParamSchema = z.object({
 });
 
 export const DeleteBillSchema = z.object({
-  id: z.number().int().positive("ID requerido"),
+  id: z.coerce.number().int().positive("ID requerido"),
   tokenRequest: z.string().optional()
 });
 
