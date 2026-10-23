@@ -13,6 +13,7 @@ import Logger from "./services/Logger";
 import { errorHandler, notFoundHandler, requestIdMiddleware } from "./middleware/errorHandler";
 import { apiVersionMiddleware, getAllVersions, getLatestVersion } from "./middleware/apiVersion";
 import { apiLimiter } from "./middleware/rateLimiter";
+import v2Router from "./routes/v2.routes";
 import config, { validateConfig } from "./config/environment";
 
 export class App {
@@ -70,14 +71,15 @@ export class App {
       });
     });
     
+    this.app.use("/v2", v2Router);
     this.app.use("/v3", v3Router);
     
-    this.app.use("/auth", apiLimiter.auth, authRoute);
-    this.app.use("/bills", apiLimiter.billCreate, billRouter);
+    this.app.use("/auth", authRoute);
+    this.app.use("/bills", billRouter);
     
     // Compatibilidad v2: rutas legacy en raíz (sin prefijo /auth, /bills)
-    this.app.use("/", apiLimiter.auth, authRoute);
-    this.app.use("/", apiLimiter.billCreate, billRouter);
+    this.app.use("/", authRoute);
+    this.app.use("/", billRouter);
     
     this.app.use(userRoute);
     this.app.use(noteCreditRoute);
